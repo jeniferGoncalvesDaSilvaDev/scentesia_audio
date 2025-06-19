@@ -213,36 +213,24 @@ with col1:
         # Display results info
         st.info(f"🆔 Processing ID: {results.get('aroma_id', 'N/A')}")
         
-        # Automatic download buttons
-        col_download1, col_download2 = st.columns(2)
+        # Automatic audio download
+        st.markdown("**🎵 Arquivo de Áudio Gerado**")
+        audio_filename = results.get('audio_file')
+        frequencies_count = results.get('frequencies_processed', 0)
         
-        with col_download1:
-            st.markdown("**🎵 Audio File**")
-            audio_filename = results.get('audio_file')
-            if audio_filename:
-                audio_data = download_file("audio", company_name, audio_filename)
-                if audio_data:
-                    st.download_button(
-                        label="📥 Download Audio (MP3)",
-                        data=audio_data,
-                        file_name=audio_filename,
-                        mime="audio/mpeg",
-                        use_container_width=True
-                    )
+        st.success(f"✅ Processamento concluído! {frequencies_count} frequências convertidas em áudio.")
         
-        with col_download2:
-            st.markdown("**📄 PDF Report**")
-            pdf_filename = results.get('pdf_report')
-            if pdf_filename:
-                pdf_data = download_file("report", company_name, pdf_filename)
-                if pdf_data:
-                    st.download_button(
-                        label="📥 Download Report (PDF)",
-                        data=pdf_data,
-                        file_name=pdf_filename,
-                        mime="application/pdf",
-                        use_container_width=True
-                    )
+        if audio_filename:
+            audio_data = download_file("audio", company_name, audio_filename)
+            if audio_data:
+                st.download_button(
+                    label="📥 Baixar Arquivo de Áudio (MP3)",
+                    data=audio_data,
+                    file_name=audio_filename,
+                    mime="audio/mpeg",
+                    use_container_width=True
+                )
+                st.info(f"📄 Arquivo: {audio_filename} | Duração: 30 segundos")
         
         # Clear results button
         if st.button("🔄 Process New File", use_container_width=True):
@@ -255,32 +243,32 @@ with col2:
     st.header("ℹ️ Information")
     
     # System info
-    st.subheader("🔧 System Requirements")
+    st.subheader("🔧 Requisitos do Sistema")
     st.markdown("""
-    **Excel File Format:**
-    - Must contain a column named 'THz'
-    - Frequencies should be in Terahertz units
-    - Supported formats: .xlsx, .xls
+    **Formato do Arquivo Excel:**
+    - Deve conter uma coluna chamada 'THz'
+    - Frequências em unidades Terahertz
+    - Formatos suportados: .xlsx, .xls
     
-    **Output:**
-    - 🎵 MP3 audio file (30 seconds)
-    - 📄 Detailed PDF report with statistics
-    - 📊 Frequency distribution analysis
+    **Saída:**
+    - 🎵 Arquivo de áudio MP3 (30 segundos)
+    - 📊 Conversão automática THz para Hz
+    - 🎧 Pronto para download automático
     """)
     
     # Processing info
-    st.subheader("⚙️ Processing Details")
+    st.subheader("⚙️ Detalhes do Processamento")
     st.markdown("""
-    **Audio Generation:**
-    - Duration: 30 seconds
-    - Sample Rate: 44.1 kHz
-    - Bit Rate: 192 kbps
-    - Format: MP3
+    **Geração de Áudio:**
+    - Duração: 30 segundos
+    - Taxa de Amostragem: 44.1 kHz
+    - Taxa de Bits: 192 kbps
+    - Formato: MP3
     
-    **Frequency Range:**
-    - Minimum: 18 kHz
-    - Maximum: 22 kHz
-    - Conversion: THz → Hz
+    **Faixa de Frequência:**
+    - Mínimo: 18 kHz
+    - Máximo: 22 kHz
+    - Conversão: THz → Hz
     """)
     
     # Status indicator
