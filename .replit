@@ -2,7 +2,7 @@ modules = ["python-3.11"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["glibcLocales"]
+packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "pkg-config", "qhull", "tcl", "tk"]
 
 [deployment]
 deploymentTarget = "autoscale"
@@ -20,6 +20,10 @@ author = "agent"
 task = "workflow.run"
 args = "Streamlit App"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Backend API"
+
 [[workflows.workflow]]
 name = "Streamlit App"
 author = "agent"
@@ -29,6 +33,19 @@ task = "shell.exec"
 args = "streamlit run app.py --server.port 5000"
 waitForPort = 5000
 
+[[workflows.workflow]]
+name = "Backend API"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python backend.py"
+waitForPort = 8000
+
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 8000
+externalPort = 8000
