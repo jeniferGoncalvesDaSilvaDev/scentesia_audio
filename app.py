@@ -286,7 +286,7 @@ st.markdown("---")
 st.markdown(
     """
     <div style='text-align: center; color: #666;'>
-        <p>NeuroAudio Processing System v1.0 | Powered by Streamlit & FastAPI</p>
+        <p>Copyright Cycor Cibernética 2025 - Todos os direitos reservados</p>
     </div>
     """,
     unsafe_allow_html=True
