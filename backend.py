@@ -57,15 +57,15 @@ def generate_histogram_base64(frequencies):
         mean_freq = float(np.mean(freq_array))
         median_freq = float(np.median(freq_array))
         plt.axvline(mean_freq, color='red', linestyle='--', linewidth=1.5, 
-                   label=f'Mean: {mean_freq:.3f} THz')
+                   label=f'Média: {mean_freq:.3f} THz')
         plt.axvline(median_freq, color='green', linestyle=':', linewidth=1.5, 
-                   label=f'Median: {median_freq:.3f} THz')
+                   label=f'Mediana: {median_freq:.3f} THz')
         
-        plt.title('Frequency Distribution')
-        plt.xlabel('Frequency (THz)')
-        plt.ylabel('Count')
+        plt.title('Distribuição de Frequências', fontsize=14, fontweight='bold')
+        plt.xlabel('Frequência (THz)', fontsize=12)
+        plt.ylabel('Contagem', fontsize=12)
         plt.grid(axis='y', alpha=0.4)
-        plt.legend()
+        plt.legend(fontsize=10)
         
         # Save to base64
         buffer = BytesIO()
@@ -153,25 +153,25 @@ def generate_pdf_report(frequencies, pdf_filename, aroma_id, company_name, outpu
 
         # Header
         pdf.set_font("Arial", 'B', 16)
-        pdf.cell(200, 10, "NeuroAudio Technical Report", ln=True, align='C')
+        pdf.cell(200, 10, "Relatorio Tecnico NeuroAudio", ln=True, align='C')
         pdf.ln(8)
         
         pdf.set_font("Arial", 'I', 10)
-        pdf.cell(200, 5, "Professional Processing Platform", ln=True, align='C')
+        pdf.cell(200, 5, "Plataforma Profissional de Processamento", ln=True, align='C')
         pdf.ln(15)
 
         # Basic Information
         pdf.set_font("Arial", 'B', 12)
-        pdf.cell(200, 8, "PROCESSING INFORMATION", ln=True)
+        pdf.cell(200, 8, "INFORMACOES DO PROCESSAMENTO", ln=True)
         pdf.ln(5)
         
         pdf.set_font("Arial", size=10)
         info_items = [
-            f"Company: {remove_accents(company_name)}",
-            f"Processing ID: {aroma_id}",
-            f"Date/Time: {datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}",
-            f"Total Frequencies: {len(frequencies)}",
-            f"Audio Duration: {Config.TOTAL_DURATION_SECONDS} seconds"
+            f"Empresa: {remove_accents(company_name)}",
+            f"ID do Processamento: {aroma_id}",
+            f"Data/Hora: {datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}",
+            f"Total de Frequencias: {len(frequencies)}",
+            f"Duracao do Audio: {Config.TOTAL_DURATION_SECONDS} segundos"
         ]
         
         for item in info_items:
@@ -179,19 +179,19 @@ def generate_pdf_report(frequencies, pdf_filename, aroma_id, company_name, outpu
         
         pdf.ln(10)
 
-        # Statistics
+        # Statistics with educational explanations
         pdf.set_font("Arial", 'B', 12)
-        pdf.cell(200, 8, "FREQUENCY STATISTICS", ln=True)
+        pdf.cell(200, 8, "ESTATISTICAS DAS FREQUENCIAS", ln=True)
         pdf.ln(5)
         
         stats = {
-            "Minimum": np.min(frequencies),
-            "Maximum": np.max(frequencies),
-            "Mean": np.mean(frequencies),
-            "Median": np.median(frequencies),
-            "Std Dev": np.std(frequencies),
-            "1st Quartile": np.percentile(frequencies, 25),
-            "3rd Quartile": np.percentile(frequencies, 75)
+            "Minima": np.min(frequencies),
+            "Maxima": np.max(frequencies),
+            "Media": np.mean(frequencies),
+            "Mediana": np.median(frequencies),
+            "Desvio Padrao": np.std(frequencies),
+            "1º Quartil (Q1)": np.percentile(frequencies, 25),
+            "3º Quartil (Q3)": np.percentile(frequencies, 75)
         }
         
         pdf.set_font("Arial", size=10)
@@ -199,11 +199,43 @@ def generate_pdf_report(frequencies, pdf_filename, aroma_id, company_name, outpu
             pdf.cell(100, 6, f"{name}:", ln=False)
             pdf.cell(100, 6, f"{float(value):.6f} THz", ln=True)
         
-        pdf.ln(10)
+        pdf.ln(8)
+        
+        # Educational explanations
+        pdf.set_font("Arial", 'B', 11)
+        pdf.cell(200, 8, "EXPLICACAO DAS ESTATISTICAS", ln=True)
+        pdf.ln(3)
+        
+        pdf.set_font("Arial", size=9)
+        explanations = [
+            "• MEDIA: Valor central das frequencias. Representa a frequencia 'tipica' do conjunto.",
+            "• MEDIANA: Valor que divide os dados ao meio. 50% das frequencias estao abaixo dela.",
+            "• DESVIO PADRAO: Mede o quanto as frequencias variam em relacao a media.",
+            "  - Valores baixos = frequencias concentradas perto da media",
+            "  - Valores altos = frequencias mais espalhadas",
+            "• QUARTIS: Dividem os dados em 4 partes iguais:",
+            "  - Q1: 25% das frequencias estao abaixo deste valor",
+            "  - Q3: 75% das frequencias estao abaixo deste valor",
+            "• AMPLITUDE: Diferenca entre o maior e menor valor (Max - Min)",
+            f"  Sua amplitude: {float(np.max(frequencies) - np.min(frequencies)):.6f} THz"
+        ]
+        
+        for explanation in explanations:
+            pdf.cell(200, 4, remove_accents(explanation), ln=True)
+        
+        pdf.ln(8)
 
-        # Histogram
+        # Histogram with enhanced explanation
         pdf.set_font("Arial", 'B', 12)
-        pdf.cell(200, 8, "FREQUENCY DISTRIBUTION", ln=True)
+        pdf.cell(200, 8, "DISTRIBUICAO DE FREQUENCIAS (HISTOGRAMA)", ln=True)
+        pdf.ln(5)
+        
+        pdf.set_font("Arial", size=9)
+        pdf.cell(200, 4, "O histograma abaixo mostra como as frequencias estao distribuidas:", ln=True)
+        pdf.cell(200, 4, "• Barras altas = muitas frequencias naquela faixa", ln=True)
+        pdf.cell(200, 4, "• Barras baixas = poucas frequencias naquela faixa", ln=True)
+        pdf.cell(200, 4, "• Linha vermelha tracejada = media das frequencias", ln=True)
+        pdf.cell(200, 4, "• Linha verde pontilhada = mediana das frequencias", ln=True)
         pdf.ln(5)
         
         try:
@@ -213,19 +245,44 @@ def generate_pdf_report(frequencies, pdf_filename, aroma_id, company_name, outpu
                 img_file.write(base64.b64decode(hist_img))
             
             pdf.image(temp_img, x=10, y=pdf.get_y(), w=180)
-            pdf.ln(90)
+            pdf.ln(85)
             os.remove(temp_img)
+            
+            # Analysis of distribution
+            pdf.set_font("Arial", 'B', 10)
+            pdf.cell(200, 6, "ANALISE DA DISTRIBUICAO:", ln=True)
+            pdf.set_font("Arial", size=9)
+            
+            freq_array = np.array(frequencies)
+            skewness = float(np.mean(((freq_array - np.mean(freq_array)) / np.std(freq_array)) ** 3))
+            
+            if abs(skewness) < 0.5:
+                distribution_type = "aproximadamente simetrica"
+            elif skewness > 0:
+                distribution_type = "assimetrica positiva (cauda para a direita)"
+            else:
+                distribution_type = "assimetrica negativa (cauda para a esquerda)"
+            
+            pdf.cell(200, 4, f"• Tipo de distribuicao: {distribution_type}", ln=True)
+            pdf.cell(200, 4, f"• Concentracao: {len(freq_array)} frequencias em {len(set(freq_array))} valores unicos", ln=True)
+            
+            # Range analysis
+            q1, q3 = np.percentile(freq_array, [25, 75])
+            iqr = q3 - q1
+            pdf.cell(200, 4, f"• Amplitude interquartil (IQR): {float(iqr):.6f} THz", ln=True)
+            pdf.cell(200, 4, "  (50% dos dados estao dentro desta faixa)", ln=True)
+            
         except Exception as e:
             logger.error(f"Histogram error: {e}")
-            pdf.cell(200, 6, "Chart not available", ln=True)
+            pdf.cell(200, 6, "Grafico nao disponivel", ln=True)
         
-        pdf.ln(10)
+        pdf.ln(8)
 
         # Footer
         pdf.set_y(-30)
         pdf.set_font("Arial", 'I', 8)
-        pdf.cell(0, 5, "NeuroAudio System - Technical Processing", ln=True, align='C')
-        pdf.cell(0, 5, f"Document ID: {aroma_id}", ln=True, align='C')
+        pdf.cell(0, 5, "Sistema NeuroAudio - Processamento Tecnico", ln=True, align='C')
+        pdf.cell(0, 5, f"ID do Documento: {aroma_id}", ln=True, align='C')
 
         # Save PDF
         os.makedirs(output_dir, exist_ok=True)

@@ -78,7 +78,17 @@ The system follows a client-server architecture with the following components:
 
 Preferred communication style: Simple, everyday language.
 
-## Changelog
+## Recent Changes
 
-Changelog:
-- June 19, 2025. Initial setup
+- June 19, 2025: Initial NeuroAudio Processing System setup
+- June 19, 2025: Implemented complete FastAPI backend with audio generation and PDF reporting
+- June 19, 2025: Enhanced PDF reports with educational statistics explanations and improved histograms
+- June 19, 2025: Added automatic download functionality for both audio and PDF files
+- June 19, 2025: Localized interface and reports to Portuguese
+
+## User Preferences
+
+- Language: Portuguese for reports and interface elements
+- Download behavior: Automatic downloads directly in browser
+- Report content: Educational explanations of statistics in simple terms
+- Communication style: Simple, everyday language

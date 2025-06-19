@@ -213,38 +213,36 @@ with col1:
         # Display results info
         st.info(f"🆔 Processing ID: {results.get('aroma_id', 'N/A')}")
         
-        # Download buttons
+        # Automatic download buttons
         col_download1, col_download2 = st.columns(2)
         
         with col_download1:
             st.markdown("**🎵 Audio File**")
             audio_filename = results.get('audio_file')
             if audio_filename:
-                if st.button("📥 Download Audio (MP3)", use_container_width=True):
-                    audio_data = download_file("audio", company_name, audio_filename)
-                    if audio_data:
-                        st.download_button(
-                            label="💾 Save Audio File",
-                            data=audio_data,
-                            file_name=audio_filename,
-                            mime="audio/mpeg",
-                            use_container_width=True
-                        )
+                audio_data = download_file("audio", company_name, audio_filename)
+                if audio_data:
+                    st.download_button(
+                        label="📥 Download Audio (MP3)",
+                        data=audio_data,
+                        file_name=audio_filename,
+                        mime="audio/mpeg",
+                        use_container_width=True
+                    )
         
         with col_download2:
             st.markdown("**📄 PDF Report**")
             pdf_filename = results.get('pdf_report')
             if pdf_filename:
-                if st.button("📥 Download Report (PDF)", use_container_width=True):
-                    pdf_data = download_file("report", company_name, pdf_filename)
-                    if pdf_data:
-                        st.download_button(
-                            label="💾 Save PDF Report",
-                            data=pdf_data,
-                            file_name=pdf_filename,
-                            mime="application/pdf",
-                            use_container_width=True
-                        )
+                pdf_data = download_file("report", company_name, pdf_filename)
+                if pdf_data:
+                    st.download_button(
+                        label="📥 Download Report (PDF)",
+                        data=pdf_data,
+                        file_name=pdf_filename,
+                        mime="application/pdf",
+                        use_container_width=True
+                    )
         
         # Clear results button
         if st.button("🔄 Process New File", use_container_width=True):
