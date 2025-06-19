@@ -42,7 +42,7 @@ def upload_and_process_file(file, company_name):
         data = {"company_name": company_name}
         
         response = requests.post(
-            f"{API_BASE_URL}/process-audio",
+            f"{API_BASE_URL}/process",
             files=files,
             data=data,
             timeout=300  # 5 minutes timeout for processing
