@@ -208,15 +208,15 @@ def generate_pdf_report(frequencies, pdf_filename, aroma_id, company_name, outpu
         
         pdf.set_font("Arial", size=9)
         explanations = [
-            "• MEDIA: Valor central das frequencias. Representa a frequencia 'tipica' do conjunto.",
-            "• MEDIANA: Valor que divide os dados ao meio. 50% das frequencias estao abaixo dela.",
-            "• DESVIO PADRAO: Mede o quanto as frequencias variam em relacao a media.",
-            "  - Valores baixos = frequencias concentradas perto da media",
-            "  - Valores altos = frequencias mais espalhadas",
-            "• QUARTIS: Dividem os dados em 4 partes iguais:",
-            "  - Q1: 25% das frequencias estao abaixo deste valor",
-            "  - Q3: 75% das frequencias estao abaixo deste valor",
-            "• AMPLITUDE: Diferenca entre o maior e menor valor (Max - Min)",
+            "- MEDIA: Valor central das frequencias. Representa a frequencia 'tipica' do conjunto.",
+            "- MEDIANA: Valor que divide os dados ao meio. 50% das frequencias estao abaixo dela.",
+            "- DESVIO PADRAO: Mede o quanto as frequencias variam em relacao a media.",
+            "  Valores baixos = frequencias concentradas perto da media",
+            "  Valores altos = frequencias mais espalhadas",
+            "- QUARTIS: Dividem os dados em 4 partes iguais:",
+            "  Q1: 25% das frequencias estao abaixo deste valor",
+            "  Q3: 75% das frequencias estao abaixo deste valor",
+            "- AMPLITUDE: Diferenca entre o maior e menor valor (Max - Min)",
             f"  Sua amplitude: {float(np.max(frequencies) - np.min(frequencies)):.6f} THz"
         ]
         
@@ -232,10 +232,10 @@ def generate_pdf_report(frequencies, pdf_filename, aroma_id, company_name, outpu
         
         pdf.set_font("Arial", size=9)
         pdf.cell(200, 4, "O histograma abaixo mostra como as frequencias estao distribuidas:", ln=True)
-        pdf.cell(200, 4, "• Barras altas = muitas frequencias naquela faixa", ln=True)
-        pdf.cell(200, 4, "• Barras baixas = poucas frequencias naquela faixa", ln=True)
-        pdf.cell(200, 4, "• Linha vermelha tracejada = media das frequencias", ln=True)
-        pdf.cell(200, 4, "• Linha verde pontilhada = mediana das frequencias", ln=True)
+        pdf.cell(200, 4, "- Barras altas = muitas frequencias naquela faixa", ln=True)
+        pdf.cell(200, 4, "- Barras baixas = poucas frequencias naquela faixa", ln=True)
+        pdf.cell(200, 4, "- Linha vermelha tracejada = media das frequencias", ln=True)
+        pdf.cell(200, 4, "- Linha verde pontilhada = mediana das frequencias", ln=True)
         pdf.ln(5)
         
         try:
@@ -263,13 +263,13 @@ def generate_pdf_report(frequencies, pdf_filename, aroma_id, company_name, outpu
             else:
                 distribution_type = "assimetrica negativa (cauda para a esquerda)"
             
-            pdf.cell(200, 4, f"• Tipo de distribuicao: {distribution_type}", ln=True)
-            pdf.cell(200, 4, f"• Concentracao: {len(freq_array)} frequencias em {len(set(freq_array))} valores unicos", ln=True)
+            pdf.cell(200, 4, f"- Tipo de distribuicao: {distribution_type}", ln=True)
+            pdf.cell(200, 4, f"- Concentracao: {len(freq_array)} frequencias em {len(set(freq_array))} valores unicos", ln=True)
             
             # Range analysis
             q1, q3 = np.percentile(freq_array, [25, 75])
             iqr = q3 - q1
-            pdf.cell(200, 4, f"• Amplitude interquartil (IQR): {float(iqr):.6f} THz", ln=True)
+            pdf.cell(200, 4, f"- Amplitude interquartil (IQR): {float(iqr):.6f} THz", ln=True)
             pdf.cell(200, 4, "  (50% dos dados estao dentro desta faixa)", ln=True)
             
         except Exception as e:
