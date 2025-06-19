@@ -66,7 +66,7 @@ def format_file_size(size_bytes):
 
 def get_api_base_url():
     """Get the API base URL from environment or use default"""
-    return os.getenv("API_BASE_URL", "http://localhost:8000")
+    return os.getenv("API_BASE_URL", "https://neuro-audio-generator.onrender.com")
 
 def sanitize_company_name(company_name):
     """Sanitize company name for use in file paths"""
