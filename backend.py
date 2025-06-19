@@ -309,14 +309,44 @@ async def process_audio(
         # Process Excel
         try:
             df = pd.read_excel(file.file)
-            if Config.REQUIRED_EXCEL_COLUMN not in df.columns:
-                raise ValueError(f"Column '{Config.REQUIRED_EXCEL_COLUMN}' not found")
             
+            # Check if file is empty
+            if df.empty:
+                raise ValueError("Arquivo Excel está vazio")
+            
+            # Check if THz column exists
+            if Config.REQUIRED_EXCEL_COLUMN not in df.columns:
+                raise ValueError(f"Coluna '{Config.REQUIRED_EXCEL_COLUMN}' não encontrada no arquivo")
+            
+            # Get frequencies and validate
             frequencies = df[Config.REQUIRED_EXCEL_COLUMN].dropna().tolist()
+            
+            # Check if there are any frequencies
             if not frequencies:
-                raise ValueError("No valid frequencies found")
+                raise ValueError("Nenhuma frequência válida encontrada na coluna THz")
+            
+            # Check minimum number of frequencies
+            if len(frequencies) < 1:
+                raise ValueError("É necessário pelo menos 1 frequência para gerar áudio")
+            
+            # Validate that frequencies are numeric
+            numeric_frequencies = []
+            for freq in frequencies:
+                try:
+                    numeric_freq = float(freq)
+                    if numeric_freq <= 0:
+                        continue  # Skip zero or negative frequencies
+                    numeric_frequencies.append(numeric_freq)
+                except (ValueError, TypeError):
+                    continue  # Skip non-numeric values
+            
+            if not numeric_frequencies:
+                raise ValueError("Nenhuma frequência numérica válida encontrada (valores devem ser positivos)")
+            
+            frequencies = numeric_frequencies
+            
         except Exception as e:
-            raise HTTPException(status_code=400, detail=f"Excel error: {str(e)}")
+            raise HTTPException(status_code=400, detail=f"Erro no arquivo Excel: {str(e)}")
 
         # Generate Audio
         audio_filename = f"NeuroAudio_{company_name}_{aroma_id}.mp3"

@@ -23,16 +23,17 @@ def validate_excel_file(uploaded_file):
         if len(thz_column) == 0:
             return {
                 "valid": False,
-                "error": "No valid frequency data found in THz column"
+                "error": "Nenhuma frequência válida encontrada na coluna THz"
             }
         
-        # Check for numeric data
+        # Check for numeric data and positive values
         try:
             pd.to_numeric(thz_column, errors='raise')
+            positive_count = len(thz_column)
         except ValueError:
             return {
                 "valid": False,
-                "error": "THz column contains non-numeric values"
+                "error": "Coluna THz contém valores não numéricos"
             }
         
         # Reset file pointer for later use
@@ -41,7 +42,7 @@ def validate_excel_file(uploaded_file):
         return {
             "valid": True,
             "row_count": len(df),
-            "frequency_count": len(thz_column)
+            "frequency_count": positive_count
         }
         
     except Exception as e:
