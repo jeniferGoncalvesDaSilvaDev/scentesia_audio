@@ -1,0 +1,31 @@
+services:
+  # Backend API Service
+  - type: web
+    name: neuroaudio-api
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python backend.py"
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8000
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+
+  # Frontend Streamlit Service  
+  - type: web
+    name: neuroaudio-app
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "streamlit run app.py --server.port $PORT --server.address 0.0.0.0"
+    plan: free
+    envVars:
+      - key: API_BASE_URL
+        fromService:
+          type: web
+          name: neuroaudio-api
+          property: host
+    scaling:
+      minInstances: 1
+      maxInstances: 1
