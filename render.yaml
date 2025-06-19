@@ -4,7 +4,7 @@ services:
     name: neuroaudio-api
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python backend.py"
+    startCommand: "python main.py"
     plan: free
     envVars:
       - key: PORT
