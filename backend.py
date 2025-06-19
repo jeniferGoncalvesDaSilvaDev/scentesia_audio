@@ -329,25 +329,12 @@ async def process_audio(
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Audio error: {str(e)}")
 
-        # Generate PDF
-        pdf_filename = f"Report_{company_name}_{aroma_id}.pdf"
-        try:
-            pdf_path = generate_pdf_report(
-                frequencies=frequencies,
-                pdf_filename=pdf_filename,
-                aroma_id=aroma_id,
-                company_name=company_name,
-                output_dir=output_dir
-            )
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"PDF error: {str(e)}")
-
         return {
             "status": "success",
             "audio_file": audio_filename,
-            "pdf_report": pdf_filename,
             "aroma_id": aroma_id,
-            "output_dir": output_dir
+            "output_dir": output_dir,
+            "frequencies_processed": len(frequencies)
         }
     except HTTPException:
         raise
