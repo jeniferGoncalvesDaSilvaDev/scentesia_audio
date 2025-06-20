@@ -85,7 +85,7 @@ def get_api_base_url():
     
     # Add default URLs
     api_urls.extend([
-        "https://neuro-audio-generator.onrender.com",
+        "https://scentesia-audio.onrender.com",
         "http://localhost:8000"  # Local fallback
     ])
     

@@ -17,7 +17,7 @@
 
 ```toml
 [general]
-API_BASE_URL = "https://neuro-audio-generator.onrender.com"
+API_BASE_URL = "https://scentesia-audio.onrender.com"
 ```
 
 4. Clique em **Save**
