@@ -65,15 +65,41 @@ def format_file_size(size_bytes):
     return f"{size_bytes:.1f} {size_names[i]}"
 
 def get_api_base_url():
-    """Get the API base URL from environment or use default"""
+    """Get the API base URL with fallback support"""
     import streamlit as st
+    import requests
+    
+    # List of API URLs to try (in priority order)
+    api_urls = []
     
     # Try Streamlit secrets first (for Streamlit Cloud)
     try:
-        return st.secrets["general"]["API_BASE_URL"]
+        api_urls.append(st.secrets["general"]["API_BASE_URL"])
     except:
-        # Fallback to environment variable or default
-        return os.getenv("API_BASE_URL", "https://neuro-audio-generator.onrender.com")
+        pass
+    
+    # Add environment variable
+    env_url = os.getenv("API_BASE_URL")
+    if env_url:
+        api_urls.append(env_url)
+    
+    # Add default URLs
+    api_urls.extend([
+        "https://neuro-audio-generator.onrender.com",
+        "http://localhost:8000"  # Local fallback
+    ])
+    
+    # Test each URL and return the first working one
+    for url in api_urls:
+        try:
+            response = requests.get(f"{url}/", timeout=10)
+            if response.status_code == 200:
+                return url
+        except:
+            continue
+    
+    # Return first URL as last resort
+    return api_urls[0] if api_urls else "http://localhost:8000"
 
 def sanitize_company_name(company_name):
     """Sanitize company name for use in file paths"""

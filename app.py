@@ -30,7 +30,7 @@ API_BASE_URL = get_api_base_url()
 def check_api_connection():
     """Check if the FastAPI backend is accessible"""
     try:
-        response = requests.get(f"{API_BASE_URL}/", timeout=5)
+        response = requests.get(f"{API_BASE_URL}/", timeout=15)
         return response.status_code == 200
     except requests.exceptions.RequestException:
         return False
@@ -88,12 +88,25 @@ st.title("🎵 NeuroAudio Processing System")
 st.markdown("---")
 
 # Check API connection
-if not check_api_connection():
-    st.error("⚠️ Backend API is not available. Please ensure the FastAPI server is running on port 8000.")
-    st.info("To start the backend server, run: `python main.py` in the backend directory")
-    st.stop()
+with st.spinner("Conectando à API..."):
+    api_connected = check_api_connection()
 
-st.success("✅ Connected to NeuroAudio API")
+if not api_connected:
+    st.warning("⚠️ API Backend não está disponível")
+    if "render.com" in API_BASE_URL:
+        st.info("🔄 A API do Render pode estar hibernando (plano gratuito). Aguarde alguns segundos e recarregue a página.")
+        st.info("💡 A primeira requisição pode demorar até 1 minuto para ativar o serviço.")
+    else:
+        st.info("🔧 Para usar localmente, execute: `python main.py` na pasta backend")
+    
+    # Don't stop completely, allow user to try anyway
+    st.warning("⚠️ Tentativas de processamento podem falhar até a API estar ativa")
+else:
+    st.success(f"✅ Conectado à API NeuroAudio")
+    if "localhost" in API_BASE_URL:
+        st.info("🏠 Usando API local")
+    else:
+        st.info("☁️ Usando API do Render")
 
 # Sidebar for file upload and configuration
 with st.sidebar:
