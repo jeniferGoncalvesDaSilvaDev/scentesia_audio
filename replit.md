@@ -81,10 +81,12 @@ Preferred communication style: Simple, everyday language.
 ## Recent Changes
 
 - June 19, 2025: Initial NeuroAudio Processing System setup
-- June 19, 2025: Implemented complete FastAPI backend with audio generation and PDF reporting
-- June 19, 2025: Enhanced PDF reports with educational statistics explanations and improved histograms
-- June 19, 2025: Added automatic download functionality for both audio and PDF files
-- June 19, 2025: Localized interface and reports to Portuguese
+- June 19, 2025: Implemented complete FastAPI backend with audio generation
+- June 19, 2025: Removed PDF generation due to dependency issues, focus on audio only
+- June 19, 2025: Fixed pyaudioop errors by replacing pydub with numpy+wave for audio generation
+- June 19, 2025: Corrected API endpoint from /process-audio to /process
+- June 20, 2025: Configured for dual deployment: Render (API) + Streamlit Cloud (Frontend)
+- June 20, 2025: Fixed port configuration (8501) for Streamlit Cloud compatibility
 
 ## User Preferences
 
