@@ -108,7 +108,7 @@ app = FastAPI(title="NeuroAudio API", version="1.0.0")
 # Storage for processed files
 processed_files = {}
 
-@app.post("/process")
+@app.post("/process-audio")
 async def process_audio(
     file: UploadFile = File(...),
     company_name: str = Form("Client")
