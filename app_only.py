@@ -23,7 +23,7 @@ if 'company_name' not in st.session_state:
     st.session_state.company_name = ""
 
 # API Configuration - User needs to configure this
-API_BASE_URL = st.secrets.get("API_BASE_URL", "https://seu-backend-api.com")
+API_BASE_URL = st.secrets.get("API_BASE_URL", "https://neuro-audio-generator.onrender.com")
 
 def check_api_connection():
     """Check if the FastAPI backend is accessible"""
